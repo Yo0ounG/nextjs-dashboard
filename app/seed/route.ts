@@ -82,7 +82,11 @@ export async function GET() {
     return Response.json({ message: 'Database seeded successfully ✅' });
   } catch (error) {
     console.error('Seed error:', error);
-    return Response.json({ error: error.message }, { status: 500 });
+
+    const message =
+      error instanceof Error ? error.message : 'Unknown error occurred';
+
+    return Response.json({ error: message }, { status: 500 });
   } finally {
     await sql.end({ timeout: 1 });
   }
